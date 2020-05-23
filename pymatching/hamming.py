@@ -24,7 +24,7 @@ class HammingMetric(Metric[Collection[T]]):
         return hamming_distance(a, b)
 
 
-class HammingRatio(Ratio):
+class HammingRatio(Ratio[Collection[T]]):
     def ratio_min(self) -> int:
         return 1
 

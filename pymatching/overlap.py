@@ -12,7 +12,7 @@ def overlap_coefficient(one: Iterable[T], two: Iterable[T]) -> float:
     return len(a & b) / min(len(a), len(b))
 
 
-class OverlapRatio(Ratio):
+class OverlapRatio(Ratio[Iterable[T]]):
     def ratio_min(self) -> int:
         return 0
 

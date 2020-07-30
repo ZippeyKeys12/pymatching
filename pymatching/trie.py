@@ -1,4 +1,4 @@
-from typing import List, Iterable, Dict, TypeVar, Generic, Callable, cast
+from typing import Callable, Dict, Generic, Iterable, List, TypeVar
 
 T = TypeVar('T')
 
@@ -10,11 +10,11 @@ class TrieNode(Generic[T]):
         self.is_complete = False
         self.is_root = is_root
 
-    def get_paths(self) -> List[List[T]]:
+    def get_paths(self, all_paths: bool = False) -> List[List[T]]:
         paths = []
 
         if not self.is_root:
-            if self.is_complete:
+            if not all_paths and self.is_complete:
                 paths.append([self.value])
 
             for child in self.children.values():
@@ -62,9 +62,7 @@ class Trie(Generic[T]):
 
         return curr.children
 
-    def get_completions(self, prefix: Iterable[T] = None) -> List[Iterable[T]]:
-        prefix = prefix or self.empty
-
+    def get_completions(self, prefix: Iterable[T] = []) -> List[Iterable[T]]:
         curr = self.root
 
         path = []
@@ -79,6 +77,22 @@ class Trie(Generic[T]):
                 raise KeyError(f'{prefix}')
 
         return [self.merger(path[:-1] + x) for x in curr.get_paths()]
+
+    def get_paths(self, prefix: Iterable[T] = []) -> List[Iterable[T]]:
+        curr = self.root
+
+        path = []
+
+        for val in prefix:
+            path.append(val)
+
+            if val in curr.children:
+                curr = curr.children[val]
+
+            else:
+                raise KeyError(f'{prefix}')
+
+        return [self.merger(path[:-1] + x) for x in curr.get_paths(all_paths=True)]
 
     def __contains__(self, item: Iterable[T]) -> bool:
         curr = self.root

@@ -187,3 +187,39 @@ class WeightedSumRatio(Ratio[T]):
 
     def ratio(self,  a: T, b: T) -> float:
         return sum(map(lambda x: x[0] * x[1].ratio(a, b), self.similarities))
+
+
+class MinRatio(Ratio[T]):
+    __slots__ = ['_min', '_max', 'similarities']
+
+    def __init__(self, similarities: Iterable[Ratio[T]]):
+        self.similarities = similarities
+        self._min = min(map(lambda x: x.ratio_min(), similarities))
+        self._max = min(map(lambda x: x.ratio_max(), similarities))
+
+    def ratio_min(self) -> float:
+        return self._min
+
+    def ratio_max(self) -> float:
+        return self._max
+
+    def ratio(self, a: T, b: T) -> float:
+        return min(map(lambda x: x.ratio(a, b), self.similarities))
+
+
+class MaxRatio(Ratio[T]):
+    __slots__ = ['_min', '_max', 'similarities']
+
+    def __init__(self, similarities: Iterable[Ratio[T]]):
+        self.similarities = similarities
+        self._min = max(map(lambda x: x.ratio_min(), similarities))
+        self._max = max(map(lambda x: x.ratio_max(), similarities))
+
+    def ratio_min(self) -> float:
+        return self._min
+
+    def ratio_max(self) -> float:
+        return self._max
+
+    def ratio(self, a: T, b: T) -> float:
+        return min(map(lambda x: x.ratio(a, b), self.similarities))

@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 import numba
 
-from.measures.ratio import Ratio
+from .measures.ratio import Ratio
 
 
 def _remaining(final_match: List[int]) -> int:

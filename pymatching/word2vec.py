@@ -18,7 +18,16 @@ def word2vec_distance(one: str, two: str) -> float:
 
 
 def word2vec_similarity(one: str, two: str) -> float:
-    return nlp(one).similarity(nlp(two))
+    a = nlp(one)
+    b = nlp(two)
+
+    if np.count_nonzero(a.vector) == 0:
+        return 0
+
+    if np.count_nonzero(b.vector) == 0:
+        return 0
+
+    return a.similarity(b)
 
 
 class Word2VecMetric(Metric[str]):

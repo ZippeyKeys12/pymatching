@@ -1,6 +1,5 @@
 import re
 from functools import lru_cache
-from math import ceil
 from typing import List, Tuple
 
 import numba
@@ -82,14 +81,14 @@ def fuzzy_match(pattern: str, text: str) -> Tuple[List[str], str, int]:
 
             # Else make string with remaining valid text
             st = matches[s - 1][0]
-            ttext = ' ' * (st + 1) + text[st + 1:]
+            ttext = '\n' * (st + 1) + text[st + 1:]
 
         m = re.search(pat, ttext)
         while m is not None and m.start(1) > st:
             st = m.start(1)
             matches[s].append(st)
 
-            ttext = ' ' * (st + 1) + text[st + 1:]
+            ttext = '\n' * (st + 1) + text[st + 1:]
 
             m = re.search(pat, ttext)
 
@@ -138,3 +137,54 @@ def fuzzy_match(pattern: str, text: str) -> Tuple[List[str], str, int]:
 
     # Put the corresponding strings
     return _compress_match(text, final_match)
+
+
+@lru_cache(100)
+@numba.njit('f8(u2, u2, u2, u2)')
+def _map_to_norm(a: int, b: int, c: int, n: int) -> float:
+    """
+    Maps the results of the fuzzy match to [0,1]
+
+    Parameters
+    ----------
+    a : int
+        the length of the match
+    b : int
+        the number of continuous segments in the match
+    c : int
+        the length of the pattern
+    n : int
+        the length of the matched string
+
+    Return
+    ------
+    float
+        value from [0,1] which is greater, the better of a match it is
+    """
+    if a == 0:
+        return 0
+
+    m = .7 * c / a + .3 * a / n
+
+    if b == 1:
+        return (c - 1) / c + m / c
+
+    # return 1 - 2 * (b - 1 + a / n) / n
+    return 1 - b / c + m / c
+
+
+def fuzzy_score(pattern: str, text: str) -> float:
+    result = fuzzy_match(pattern, text)
+
+    return _map_to_norm(len(result[1]), len(result[0]), len(pattern), len(text))
+
+
+class FuzzyMatchRatio(Ratio[str]):
+    def ratio_min(self):
+        return 0
+
+    def ratio_max(self):
+        return 1
+
+    def ratio(self, a: str, b: str) -> float:
+        return fuzzy_score(a, b)

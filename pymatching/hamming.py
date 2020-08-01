@@ -26,10 +26,10 @@ class HammingMetric(Metric[Collection[T]]):
 
 class HammingRatio(Ratio[Collection[T]]):
     def ratio_min(self) -> int:
-        return 1
+        return 0
 
     def ratio_max(self) -> int:
-        return 0
+        return 1
 
     def ratio(self, a: Collection[T], b: Collection[T]) -> float:
         return hamming_ratio(a, b)

@@ -6,7 +6,7 @@ from typing import List, Tuple
 import pytest
 from pytest_benchmark.fixture import BenchmarkFixture
 
-from pymatching.fuzzymatch import fuzzy_match, fuzzy_score
+from pymatching import fuzzy_match, fuzzy_score
 
 
 @pytest.mark.parametrize("inputs,results", [

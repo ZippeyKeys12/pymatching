@@ -48,10 +48,10 @@ class LevenshteinMetric(Metric[Sequence[T]]):
 
 class LevenshteinRatio(Ratio[Sequence[T]]):
     def ratio_min(self) -> int:
-        return 1
+        return 0
 
     def ratio_max(self) -> int:
-        return 0
+        return 1
 
     def ratio(self, a: Sequence[T], b: Sequence[T]) -> float:
         return levenshtein_ratio(a, b)

@@ -1,6 +1,6 @@
 from pytest_benchmark.fixture import BenchmarkFixture
 
-from pymatching.jaccard import jaccard_distance, jaccard_index
+from pymatching import jaccard_distance, jaccard_index
 
 
 def test_jaccard_index(benchmark: BenchmarkFixture):

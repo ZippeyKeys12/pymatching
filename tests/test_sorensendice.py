@@ -1,6 +1,6 @@
 from pytest_benchmark.fixture import BenchmarkFixture
 
-from pymatching.sorensendice import sorensen_dice_coefficient
+from pymatching import sorensen_dice_coefficient
 
 
 def test_sorensen_dice_coefficient(benchmark: BenchmarkFixture):

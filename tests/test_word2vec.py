@@ -1,9 +1,11 @@
 from itertools import combinations, permutations
 from random import choice, seed
 
-from pytest_benchmark.fixture import BenchmarkFixture
 import numpy as np
-from pymatching.word2vec import Word2VecMetric, nlp, word2vec_similarity
+from pytest_benchmark.fixture import BenchmarkFixture
+
+from pymatching import Word2VecMetric, word2vec_similarity
+from pymatching.word2vec import get_nlp
 
 
 def test_word2vec_similarity(benchmark: BenchmarkFixture):
@@ -18,7 +20,7 @@ def test_word2vec_similarity(benchmark: BenchmarkFixture):
 def test_word2vec_metric():
     metric = Word2VecMetric()
 
-    vocab = list(nlp.vocab)
+    vocab = list(get_nlp().vocab)
 
     # Test Metric Invariants
     seed(type(metric).__name__)
@@ -31,7 +33,7 @@ def test_word2vec_metric():
             while np.count_nonzero(word.vector) == 0:
                 word = choice(vocab)
 
-            test_set.append(word.text)
+            test_set.append(word.text.lower())
 
         # Reflexivity
         for x in test_set:

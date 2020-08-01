@@ -6,7 +6,7 @@ from typing import List
 from pytest import raises
 from pytest_benchmark.fixture import BenchmarkFixture
 
-from pymatching.hamming import HammingMetric, hamming_distance, hamming_ratio
+from pymatching import HammingMetric, hamming_distance, hamming_ratio
 
 from .util import random_word
 
@@ -33,7 +33,7 @@ def test_hamming_ratio(benchmark: BenchmarkFixture):
     seed('hamming')
 
     to_test: List[str] = []
-    for l in range(100):
+    for _ in range(100):
         copy = list(base)
         copy[randint(0, len(copy) - 1)] = choice(string.ascii_lowercase)
         to_test.append(''.join(copy))

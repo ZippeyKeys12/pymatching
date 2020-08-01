@@ -4,8 +4,7 @@ from typing import List
 
 from pytest_benchmark.fixture import BenchmarkFixture
 
-from pymatching.sequencematch import (sequence_match_length,
-                                      sequence_match_ratio)
+from pymatching import sequence_match_length, sequence_match_ratio
 
 
 def test_sequence_match_length(benchmark: BenchmarkFixture):

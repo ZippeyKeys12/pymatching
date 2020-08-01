@@ -5,9 +5,9 @@ from typing import List
 
 from pytest_benchmark.fixture import BenchmarkFixture
 
-from pymatching.levenshtein import LevenshteinMetric
-from pymatching.levenshtein import levenshtein_distance as ld
-from pymatching.levenshtein import levenshtein_ratio as lr
+from pymatching import LevenshteinMetric
+from pymatching import levenshtein_distance as ld
+from pymatching import levenshtein_ratio as lr
 
 from .util import random_word
 
@@ -30,9 +30,9 @@ def test_levenshtein_ratio(benchmark: BenchmarkFixture):
     seed('levenshtein_ratio')
 
     to_test: List[str] = []
-    for l in range(2*len(base), 1):
+    for length in range(2*len(base), 1):
         to_test.append(''.join(choice(string.ascii_lowercase)
-                               for i in range(l)))
+                               for i in range(length)))
 
     distances = []
     results = []
